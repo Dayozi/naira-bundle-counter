@@ -1,0 +1,37 @@
+.page { padding-bottom: 30px; }
+
+.header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 6px; }
+.header h2 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; }
+.clearBtn { background: none; border: 1.5px solid var(--red); color: var(--red); border-radius: 8px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; }
+
+.summary { margin: 0 14px 10px; background: var(--green); border-radius: 14px; padding: 14px 16px; color: white; }
+.summaryLabel { font-size: 0.68rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
+.summaryAmount { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: #5EE89A; margin: 2px 0 8px; }
+.summaryRow { display: flex; gap: 20px; }
+.summaryStat { font-size: 0.75rem; }
+.summaryStat strong { color: #FFD97A; display: block; font-size: 1rem; font-family: 'Syne', sans-serif; }
+
+.empty { text-align: center; padding: 50px 30px; color: #7A9A86; }
+.emptyIcon { font-size: 3rem; margin-bottom: 12px; }
+.empty p { font-size: 0.88rem; line-height: 1.6; }
+
+.item { background: var(--white); margin: 6px 14px; border-radius: 12px; border: 1.5px solid var(--border); padding: 12px 14px; box-shadow: var(--shadow); }
+.itemTop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.itemRef { font-weight: 600; font-size: 0.88rem; }
+.itemTime { font-size: 0.7rem; color: #7A9A86; }
+.itemAmount { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--green); }
+.itemNotes { font-size: 0.7rem; color: #7A9A86; margin-top: 1px; }
+.itemDenoms { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.denomTag { background: var(--green-light); color: var(--green); font-size: 0.68rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
+.discTag { margin-top: 6px; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 6px; display: inline-block; }
+.match    { background: var(--green-light); color: var(--green); }
+.mismatch { background: var(--red-light);   color: var(--red);   }
+
+.modalOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal { background: var(--white); border-radius: 18px; padding: 24px 20px; width: 100%; max-width: 320px; text-align: center; }
+.modal h2 { font-family: 'Syne', sans-serif; font-size: 1.05rem; color: var(--red); margin-bottom: 8px; }
+.modal p { font-size: 0.88rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
+.modalBtns { display: flex; gap: 10px; }
+.modalBtns button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; }
+.btnCancel  { background: var(--off-white); color: var(--dark); }
+.btnConfirm { background: var(--red); color: white; }

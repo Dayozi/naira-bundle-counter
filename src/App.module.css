@@ -1,0 +1,35 @@
+.app { min-height: 100vh; }
+
+.header {
+  background: var(--green);
+  padding: 14px 18px 0;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 16px rgba(0,60,30,0.3);
+}
+.headerTop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--white); }
+.tellerBadge {
+  font-size: 0.7rem; background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85); padding: 4px 10px;
+  border-radius: 20px; border: none;
+}
+
+.tabs { display: flex; gap: 4px; padding: 0 4px; border-bottom: 2px solid rgba(255,255,255,0.1); }
+.tab {
+  padding: 9px 14px; font-size: 0.75rem; font-weight: 600;
+  color: rgba(255,255,255,0.55); border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  letter-spacing: 0.03em; transition: all 0.2s; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.active { color: #FFD97A; border-bottom-color: #FFD97A; }
+
+.toast {
+  position: fixed; bottom: 160px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--dark); color: white; padding: 10px 20px;
+  border-radius: 30px; font-size: 0.82rem; font-weight: 600;
+  opacity: 0; transition: all 0.3s; z-index: 400; white-space: nowrap;
+  pointer-events: none;
+}
+.toastShow { opacity: 1; transform: translateX(-50%) translateY(0); }

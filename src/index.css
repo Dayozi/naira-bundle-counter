@@ -1,0 +1,54 @@
+:root {
+  --green: #005C35;
+  --green-mid: #007A47;
+  --green-light: #E8F5EE;
+  --gold: #C8860A;
+  --gold-light: #FFF8E7;
+  --white: #FFFFFF;
+  --off-white: #F4F7F5;
+  --dark: #0A1A10;
+  --mid-dark: #2D4A38;
+  --border: #C8DDD2;
+  --red: #B0281A;
+  --red-light: #FFF0EE;
+  --blue: #1A4FA0;
+  --blue-light: #EEF3FF;
+  --shadow: 0 2px 12px rgba(0, 92, 53, 0.10);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off-white);
+  color: var(--dark);
+  min-height: 100vh;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeIn 0.25s ease forwards; }
