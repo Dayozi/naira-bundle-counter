@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import Counter from './components/Counter'
 import History from './components/History'
 import Profile from './components/Profile'
-import { getProfile } from './storage'
+import WelcomeModal from './components/WelcomeModal'
+import { getProfile, hasAcceptedWelcome, setAcceptedWelcome } from './storage'
 import styles from './App.module.css'
 
 const TABS = ['counter', 'history', 'profile']
@@ -11,6 +12,11 @@ export default function App() {
   const [tab, setTab]         = useState('counter')
   const [profile, setProfile] = useState(getProfile)
   const [toast, setToast]     = useState({ msg: '', show: false })
+  const [showWelcome, setShowWelcome] = useState(false)
+
+  useEffect(() => {
+    setShowWelcome(!hasAcceptedWelcome())
+  }, [])
 
   let toastTimer
   function showToast(msg) {
@@ -19,8 +25,15 @@ export default function App() {
     toastTimer = setTimeout(() => setToast(t => ({ ...t, show: false })), 2500)
   }
 
+  function handleWelcomeAccept() {
+    setAcceptedWelcome()
+    setShowWelcome(false)
+  }
+
   return (
     <div className={styles.app}>
+      {showWelcome && <WelcomeModal onAccept={handleWelcomeAccept} />}
+
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerTop}>

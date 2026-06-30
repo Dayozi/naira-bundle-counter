@@ -37,7 +37,6 @@ export default function Profile({ onShowToast, onProfileUpdate }) {
 
   return (
     <div className={styles.page}>
-      {/* DayoziHQ branding */}
       <div className={styles.brand}>
         <img src="/logo.png" alt="DayoziHQ" className={styles.logo} />
         <div>
@@ -46,12 +45,12 @@ export default function Profile({ onShowToast, onProfileUpdate }) {
         </div>
       </div>
 
-      <h2 className={styles.heading}>Teller Profile</h2>
+      <h2 className={styles.heading}>Your Profile</h2>
 
       {[
-        { key: 'name',    label: 'Your Name',         placeholder: 'e.g. Amaka Obi'         },
-        { key: 'branch',  label: 'Branch Name',        placeholder: 'e.g. First Bank, Kano'  },
-        { key: 'staffId', label: 'Staff ID (optional)', placeholder: 'e.g. T-0042'            },
+        { key: 'name',    label: 'Your Name',                placeholder: 'e.g. Amaka Obi'         },
+        { key: 'branch',  label: 'Branch / Location',         placeholder: 'e.g. Kano Branch'       },
+        { key: 'staffId', label: 'Personal Reference (optional)', placeholder: 'Any reference you choose — not your official bank staff ID' },
       ].map(({ key, label, placeholder }) => (
         <div key={key} className={styles.field}>
           <label>{label}</label>
@@ -67,7 +66,6 @@ export default function Profile({ onShowToast, onProfileUpdate }) {
       <button className={styles.saveBtn} onClick={handleSave}>SAVE PROFILE</button>
       {saved && <p className={styles.savedMsg}>✓ Profile saved!</p>}
 
-      {/* Install box */}
       <div className={styles.installBox}>
         <h3>📲 Install as App</h3>
         <p>Install on your phone home screen — works offline, no browser bar, opens like a real app.</p>
@@ -80,7 +78,27 @@ export default function Profile({ onShowToast, onProfileUpdate }) {
         )}
       </div>
 
-      {/* Version */}
+      {/* Privacy & Disclaimer */}
+      <div className={styles.disclaimerBox}>
+        <h3>🔒 Privacy & Disclaimer</h3>
+        <p>
+          This application performs all calculations locally on your device and works fully offline.
+          Transaction history and references are stored only in your browser's local storage. No
+          transaction data, customer references, cash counts, or history are transmitted to, collected
+          by, or stored on any server, and no third-party services are loaded by this application.
+        </p>
+        <p>
+          This tool is provided as a counting aid only. Users are responsible for verifying all
+          calculations before processing transactions. This tool does not replace your bank's official
+          cash counting machine or manual verification procedures, and is not an official record of
+          any transaction.
+        </p>
+        <p>
+          Please do not enter your official bank staff ID, account numbers, or any sensitive customer
+          information into this app. The "Personal Reference" field is for your own use only.
+        </p>
+      </div>
+
       <p className={styles.version}>₦ Bundle Counter v1.0 · Built by DayoziHQ</p>
     </div>
   )

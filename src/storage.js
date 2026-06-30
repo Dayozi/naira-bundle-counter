@@ -60,6 +60,19 @@ export function saveProfile(profile) {
   localStorage.setItem('nbc_profile', JSON.stringify(profile))
 }
 
+// ── WELCOME MODAL ─────────────────────────────────────
+export function hasAcceptedWelcome() {
+  try {
+    return localStorage.getItem('nbc_welcome_accepted') === 'true'
+  } catch {
+    return false
+  }
+}
+
+export function setAcceptedWelcome() {
+  localStorage.setItem('nbc_welcome_accepted', 'true')
+}
+
 // ── HELPERS ────────────────────────────────────────────
 export function calcDenom(bundles, packs, loose, denomValue) {
   const notes = bundles * BUNDLE_SIZE + packs * PACK_SIZE + loose
