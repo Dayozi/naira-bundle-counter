@@ -1,16 +1,60 @@
-# React + Vite
+# ₦ Bundle Counter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional cash bundle counting tool built for bank tellers and cash handlers.
+Built by **DayoziHQ** — Web Development · Digital Innovation.
 
-Currently, two official plugins are available:
+🌐 **Live App:** https://nairabundlecounter.netlify.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What It Does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Bank tellers deal with bundles, packs, and loose notes every day across multiple
+denominations. This tool replaces the manual calculator process — enter your
+bundles, packs, and loose pieces per denomination and get an instant grand total.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- ₦1000, ₦500, ₦200, ₦100, ₦50, ₦20, ₦10, ₦5 denominations
+- Bundle / Pack / Loose piece entry per denomination
+- Auto-calculated subtotal per denomination and grand total
+- Discrepancy checker — compare count against deposit slip instantly
+- Transaction history with today's summary
+- Teller profile (name and branch)
+- Works 100% offline — no internet needed after first load
+- Installable as a home screen app (PWA) on Android and iPhone
+- No data collected, no server, no tracking — everything stays on your device
+
+---
+
+## Privacy
+
+This application performs all calculations locally on your device.
+Transaction history and references are stored only in your browser's local storage.
+No transaction data, customer references, cash counts, or history are transmitted
+to, collected by, or stored on any server.
+
+This tool is provided as a counting aid only. Users are responsible for verifying
+all calculations before processing transactions.
+
+---
+
+## Built With
+
+- React 19
+- Vite 8
+- vite-plugin-pwa (Workbox)
+- CSS Modules
+
+---
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+
+## License & Ownership
+© 2025 DayoziHQ. All rights reserved.
