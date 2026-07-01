@@ -3,9 +3,9 @@ import { getHistory, clearHistory as clearAll, fmt, fmtDate } from '../storage'
 import styles from './History.module.css'
 
 export default function History({ onShowToast }) {
-  const [history, setHistory]     = useState(getHistory)
+  const [history, setHistory]         = useState(getHistory)
   const [showConfirm, setShowConfirm] = useState(false)
-  const [expanded, setExpanded]   = useState({})
+  const [expanded, setExpanded]       = useState({})
 
   const todayStart = new Date(); todayStart.setHours(0,0,0,0)
   const todayTx    = history.filter(t => t.ts >= todayStart.getTime())
@@ -24,6 +24,8 @@ export default function History({ onShowToast }) {
   }
 
   function buildParts(d) {
+    // Guard: if d is malformed just return dash
+    if (!d || typeof d !== 'object') return '—'
     const parts = []
     if (d.b > 0) parts.push(`${d.b} bundle${d.b > 1 ? 's' : ''}`)
     if (d.p > 0) parts.push(`${d.p} pack${d.p > 1 ? 's' : ''}`)
@@ -54,23 +56,27 @@ export default function History({ onShowToast }) {
           <p>No transactions saved yet.<br />Count cash and tap SAVE.</p>
         </div>
       ) : (
-        history.map(tx => {
-          const isOpen = !!expanded[tx.id]
-          return (
-            <div key={tx.id} className={styles.item}>
+        history.map((tx, index) => {
+          // Use tx.id as key — migration guarantees it always exists now
+          // Fallback to index just in case (belt and braces)
+          const key    = tx.id ?? index
+          const isOpen = !!expanded[key]
 
-              {/* ── Collapsed header — always visible ── */}
+          return (
+            <div key={key} className={styles.item}>
+
+              {/* Collapsed header — always visible, tap to expand */}
               <button
                 className={styles.itemHeader}
-                onClick={() => toggleExpand(tx.id)}
+                onClick={() => toggleExpand(key)}
               >
                 <div className={styles.itemHeaderLeft}>
-                  <span className={styles.itemRef}>{tx.ref}</span>
-                  <span className={styles.itemTime}>{fmtDate(tx.ts)}</span>
+                  <span className={styles.itemRef}>{tx.ref || 'Customer'}</span>
+                  <span className={styles.itemTime}>{tx.ts ? fmtDate(tx.ts) : '—'}</span>
                 </div>
                 <div className={styles.itemHeaderRight}>
-                  <span className={styles.itemAmount}>{fmt(tx.total)}</span>
-                  <span className={styles.itemNotes}>{tx.notes?.toLocaleString()} notes</span>
+                  <span className={styles.itemAmount}>{fmt(tx.total ?? 0)}</span>
+                  <span className={styles.itemNotes}>{(tx.notes ?? 0).toLocaleString()} notes</span>
                 </div>
                 <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>▾</span>
               </button>
@@ -79,12 +85,12 @@ export default function History({ onShowToast }) {
               {tx.matched !== null && (
                 <div className={styles.discRow}>
                   <span className={`${styles.discTag} ${tx.matched ? styles.match : styles.mismatch}`}>
-                    {tx.matched ? '✅ Slip matched' : `❌ Mismatch — slip was ${fmt(tx.slip)}`}
+                    {tx.matched ? '✅ Slip matched' : `❌ Mismatch — slip was ${fmt(tx.slip ?? 0)}`}
                   </span>
                 </div>
               )}
 
-              {/* ── Expanded breakdown — receipt style ── */}
+              {/* Expanded breakdown — receipt style */}
               {isOpen && (
                 <div className={styles.breakdown}>
                   <div className={styles.breakdownHeader}>
@@ -92,17 +98,17 @@ export default function History({ onShowToast }) {
                     <span>Breakdown</span>
                     <span>Value</span>
                   </div>
-                  {tx.denoms?.map((d, i) => (
+                  {(tx.denoms ?? []).map((d, i) => (
                     <div key={i} className={styles.breakdownRow}>
-                      <span className={styles.breakDenom}>{d.label}</span>
+                      <span className={styles.breakDenom}>{d?.label ?? '—'}</span>
                       <span className={styles.breakParts}>{buildParts(d)}</span>
-                      <span className={styles.breakValue}>{fmt(d.total)}</span>
+                      <span className={styles.breakValue}>{fmt(d?.total ?? 0)}</span>
                     </div>
                   ))}
                   <div className={styles.breakdownTotal}>
                     <span>Grand Total</span>
                     <span></span>
-                    <span>{fmt(tx.total)}</span>
+                    <span>{fmt(tx.total ?? 0)}</span>
                   </div>
                 </div>
               )}
@@ -112,7 +118,7 @@ export default function History({ onShowToast }) {
         })
       )}
 
-      {/* Confirm modal */}
+      {/* Confirm clear modal */}
       {showConfirm && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>

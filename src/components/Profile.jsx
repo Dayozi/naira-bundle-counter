@@ -94,9 +94,16 @@ export default function Profile({ onShowToast, onProfileUpdate }) {
           any transaction.
         </p>
         <p>
-          Please do not enter your official bank staff ID, account numbers, or any sensitive customer
-          information into this app. The "Personal Reference" field is for your own use only.
-        </p>
+  Please do not enter your official bank staff ID, account numbers, or any sensitive customer
+  information into this app. The "Personal Reference" field is for your own use only.
+</p>
+<p>
+  Users are responsible for ensuring this tool complies with their organisation's IT and
+  data security policies before use on work or employer-owned devices. Transaction data
+  saved by this app is stored in the browser's local storage of the device being used —
+  on shared or work-owned computers this data may be accessible to other users of the
+  same browser profile.
+</p>
       </div>
 
       <p className={styles.version}>₦ Bundle Counter v1.0 · Built by DayoziHQ</p>
