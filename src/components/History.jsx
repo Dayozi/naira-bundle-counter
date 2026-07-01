@@ -84,9 +84,18 @@ export default function History({ onShowToast }) {
               {/* Slip match status — always visible */}
               {tx.matched !== null && (
                 <div className={styles.discRow}>
-                  <span className={`${styles.discTag} ${tx.matched ? styles.match : styles.mismatch}`}>
-                    {tx.matched ? '✅ Slip matched' : `❌ Mismatch — slip was ${fmt(tx.slip ?? 0)}`}
-                  </span>
+                  {tx.matched ? (
+                    <span className={`${styles.discTag} ${styles.match}`}>
+                      ✅ Slip matched — {fmt(tx.slip ?? 0)}
+                    </span>
+                  ) : (
+                    <span className={`${styles.discTag} ${styles.mismatch}`}>
+                      ❌ {(tx.total - (tx.slip ?? 0)) < 0
+                        ? `SHORT by ${fmt(Math.abs(tx.total - (tx.slip ?? 0)))}`
+                        : `OVER by ${fmt(tx.total - (tx.slip ?? 0))}`
+                      } &nbsp;·&nbsp; Slip: {fmt(tx.slip ?? 0)} | Count: {fmt(tx.total)}
+                    </span>
+                  )}
                 </div>
               )}
 

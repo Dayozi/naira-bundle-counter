@@ -79,12 +79,12 @@
 
 .breakdownHeader {
   display: grid;
-  grid-template-columns: 70px 1fr 90px;
-  font-size: 0.6rem;
+  grid-template-columns: 80px 1fr 100px;
+  font-size: 0.58rem;
   font-weight: 700;
   color: #7A9A86;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   padding-bottom: 6px;
   border-bottom: 1px dashed var(--border);
   margin-bottom: 6px;
@@ -92,7 +92,7 @@
 
 .breakdownRow {
   display: grid;
-  grid-template-columns: 70px 1fr 90px;
+  grid-template-columns: 80px 1fr 100px;
   align-items: center;
   padding: 5px 0;
   border-bottom: 1px solid var(--border);
@@ -120,7 +120,7 @@
 /* Grand total row at bottom of breakdown */
 .breakdownTotal {
   display: grid;
-  grid-template-columns: 70px 1fr 90px;
+  grid-template-columns: 80px 1fr 100px;
   align-items: center;
   margin-top: 8px;
   padding-top: 8px;
@@ -129,6 +129,7 @@
   font-size: 0.85rem;
   font-weight: 800;
   color: var(--green);
+  white-space: nowrap;
 }
 .breakdownTotal span:last-child { text-align: right; }
 

@@ -17,6 +17,7 @@ export const BUNDLE_SIZE = 500
 // Bump this number whenever the shape of a saved transaction changes.
 // getHistory() will detect old records and migrate them automatically.
 const SCHEMA_VERSION = 1
+const MAX_HISTORY = 500
 
 // ── FORMATTERS ─────────────────────────────────────────
 export function fmt(n) {
@@ -103,7 +104,9 @@ export function saveToHistory(tx) {
       matched: tx.matched ?? null,
     }
     history.unshift(record)
-    localStorage.setItem('nbc_history', JSON.stringify(history))
+    // Cap at MAX_HISTORY — oldest entries are trimmed automatically
+    const trimmed = history.slice(0, MAX_HISTORY)
+    localStorage.setItem('nbc_history', JSON.stringify(trimmed))
   } catch (err) {
     console.error('saveToHistory failed:', err)
     throw err // re-throw so the caller can show a toast if needed

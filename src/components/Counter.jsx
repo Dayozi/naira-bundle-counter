@@ -44,7 +44,27 @@ export default function Counter({ onShowToast }) {
   // ── save ──
   function handleSave() {
     if (!grandTotal) { onShowToast('Nothing to save — enter a count first'); return }
+
+    // Validate — catch any NaN or negative values before saving
+    const hasInvalid = rows.some(row => {
+      const b = row.bundles === '' ? 0 : Number(row.bundles)
+      const p = row.packs   === '' ? 0 : Number(row.packs)
+      const l = row.loose   === '' ? 0 : Number(row.loose)
+      return isNaN(b) || isNaN(p) || isNaN(l) || b < 0 || p < 0 || l < 0
+    })
+    if (hasInvalid) {
+      onShowToast('Invalid input — check for negative or non-numeric values')
+      return
+    }
+
     const slip = parseFloat(slipAmount) || null
+
+    // Validate slip amount if entered
+    if (slipAmount !== '' && (isNaN(slip) || slip < 0)) {
+      onShowToast('Invalid slip amount — please check and try again')
+      return
+    }
+
     const denomDetails = DENOMS.map((d, i) => {
       const b = parseInt(rows[i].bundles) || 0
       const p = parseInt(rows[i].packs)   || 0
@@ -53,17 +73,21 @@ export default function Counter({ onShowToast }) {
       return { label: d.label, value: d.value, b, p, l, notes, total: value }
     }).filter(d => d.notes > 0)
 
-    saveToHistory({
-      id: Date.now(),
-      ref: ref.trim() || 'Customer',
-      total: grandTotal,
-      notes: totalNotes,
-      denoms: denomDetails,
-      slip,
-      matched: slip !== null ? grandTotal === slip : null,
-      ts: Date.now(),
-    })
-    onShowToast('✓ Transaction saved!')
+    try {
+      saveToHistory({
+        id: Date.now(),
+        ref: ref.trim() || 'Customer',
+        total: grandTotal,
+        notes: totalNotes,
+        denoms: denomDetails,
+        slip,
+        matched: slip !== null ? grandTotal === slip : null,
+        ts: Date.now(),
+      })
+      onShowToast('✓ Transaction saved!')
+    } catch {
+      onShowToast('Failed to save — storage may be full. Try clearing old history.')
+    }
   }
 
   // ── clear ──
