@@ -2,7 +2,7 @@
 
 .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 6px; }
 .header h2 { font-family: var(--font-display); font-size: 1rem; font-weight: 800; }
-.clearBtn { background: none; border: 1.5px solid var(--red); color: var(--red); border-radius: 8px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; }
+.clearBtn { background: none; border: 1.5px solid var(--red); color: var(--red); border-radius: 8px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
 
 .summary { margin: 0 14px 10px; background: var(--green); border-radius: 14px; padding: 14px 16px; color: white; }
 .summaryLabel { font-size: 0.68rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -15,23 +15,129 @@
 .emptyIcon { font-size: 3rem; margin-bottom: 12px; }
 .empty p { font-size: 0.88rem; line-height: 1.6; }
 
-.item { background: var(--white); margin: 6px 14px; border-radius: 12px; border: 1.5px solid var(--border); padding: 12px 14px; box-shadow: var(--shadow); }
-.itemTop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-.itemRef { font-weight: 600; font-size: 0.88rem; }
-.itemTime { font-size: 0.7rem; color: #7A9A86; }
-.itemAmount { font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: var(--green); }
-.itemNotes { font-size: 0.7rem; color: #7A9A86; margin-top: 1px; }
-.itemDenoms { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-.denomTag { background: var(--green-light); color: var(--green); font-size: 0.68rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
-.discTag { margin-top: 6px; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 6px; display: inline-block; }
+/* ── ITEM CARD ── */
+.item {
+  background: var(--white);
+  margin: 6px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Collapsed header row — tappable */
+.itemHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.itemHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+}
+.itemHeaderRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.itemRef { font-weight: 600; font-size: 0.88rem; color: var(--dark); }
+.itemTime { font-size: 0.68rem; color: #7A9A86; }
+.itemAmount { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--green); }
+.itemNotes { font-size: 0.68rem; color: #7A9A86; }
+
+/* Chevron arrow */
+.chevron {
+  font-size: 1.1rem;
+  color: #7A9A86;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  margin-left: 4px;
+}
+.chevronOpen { transform: rotate(180deg); }
+
+/* Slip match row */
+.discRow { padding: 0 14px 10px; }
+.discTag { font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; display: inline-block; }
 .match    { background: var(--green-light); color: var(--green); }
 .mismatch { background: var(--red-light);   color: var(--red);   }
 
+/* ── EXPANDED BREAKDOWN — receipt style ── */
+.breakdown {
+  border-top: 1.5px solid var(--border);
+  background: var(--off-white);
+  padding: 10px 14px 14px;
+}
+
+.breakdownHeader {
+  display: grid;
+  grid-template-columns: 70px 1fr 90px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #7A9A86;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 6px;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 70px 1fr 90px;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.breakdownRow:last-of-type { border-bottom: none; }
+
+.breakDenom {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--green);
+}
+.breakParts {
+  font-size: 0.72rem;
+  color: var(--mid-dark);
+  padding: 0 6px;
+}
+.breakValue {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-align: right;
+}
+
+/* Grand total row at bottom of breakdown */
+.breakdownTotal {
+  display: grid;
+  grid-template-columns: 70px 1fr 90px;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 2px solid var(--green);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--green);
+}
+.breakdownTotal span:last-child { text-align: right; }
+
+/* ── MODAL ── */
 .modalOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: var(--white); border-radius: 18px; padding: 24px 20px; width: 100%; max-width: 320px; text-align: center; }
 .modal h2 { font-family: var(--font-display); font-size: 1.05rem; color: var(--red); margin-bottom: 8px; }
 .modal p { font-size: 0.88rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
 .modalBtns { display: flex; gap: 10px; }
-.modalBtns button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.88rem; }
+.modalBtns button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.88rem; cursor: pointer; }
 .btnCancel  { background: var(--off-white); color: var(--dark); }
 .btnConfirm { background: var(--red); color: white; }

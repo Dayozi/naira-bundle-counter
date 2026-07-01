@@ -3,8 +3,9 @@ import { getHistory, clearHistory as clearAll, fmt, fmtDate } from '../storage'
 import styles from './History.module.css'
 
 export default function History({ onShowToast }) {
-  const [history, setHistory] = useState(getHistory)
+  const [history, setHistory]     = useState(getHistory)
   const [showConfirm, setShowConfirm] = useState(false)
+  const [expanded, setExpanded]   = useState({})
 
   const todayStart = new Date(); todayStart.setHours(0,0,0,0)
   const todayTx    = history.filter(t => t.ts >= todayStart.getTime())
@@ -13,8 +14,21 @@ export default function History({ onShowToast }) {
   function handleClear() {
     clearAll()
     setHistory([])
+    setExpanded({})
     setShowConfirm(false)
     onShowToast('History cleared')
+  }
+
+  function toggleExpand(id) {
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  function buildParts(d) {
+    const parts = []
+    if (d.b > 0) parts.push(`${d.b} bundle${d.b > 1 ? 's' : ''}`)
+    if (d.p > 0) parts.push(`${d.p} pack${d.p > 1 ? 's' : ''}`)
+    if (d.l > 0) parts.push(`${d.l} loose`)
+    return parts.join(' + ') || '—'
   }
 
   return (
@@ -40,28 +54,65 @@ export default function History({ onShowToast }) {
           <p>No transactions saved yet.<br />Count cash and tap SAVE.</p>
         </div>
       ) : (
-        history.map(tx => (
-          <div key={tx.id} className={styles.item}>
-            <div className={styles.itemTop}>
-              <span className={styles.itemRef}>{tx.ref}</span>
-              <span className={styles.itemTime}>{fmtDate(tx.ts)}</span>
+        history.map(tx => {
+          const isOpen = !!expanded[tx.id]
+          return (
+            <div key={tx.id} className={styles.item}>
+
+              {/* ── Collapsed header — always visible ── */}
+              <button
+                className={styles.itemHeader}
+                onClick={() => toggleExpand(tx.id)}
+              >
+                <div className={styles.itemHeaderLeft}>
+                  <span className={styles.itemRef}>{tx.ref}</span>
+                  <span className={styles.itemTime}>{fmtDate(tx.ts)}</span>
+                </div>
+                <div className={styles.itemHeaderRight}>
+                  <span className={styles.itemAmount}>{fmt(tx.total)}</span>
+                  <span className={styles.itemNotes}>{tx.notes?.toLocaleString()} notes</span>
+                </div>
+                <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>▾</span>
+              </button>
+
+              {/* Slip match status — always visible */}
+              {tx.matched !== null && (
+                <div className={styles.discRow}>
+                  <span className={`${styles.discTag} ${tx.matched ? styles.match : styles.mismatch}`}>
+                    {tx.matched ? '✅ Slip matched' : `❌ Mismatch — slip was ${fmt(tx.slip)}`}
+                  </span>
+                </div>
+              )}
+
+              {/* ── Expanded breakdown — receipt style ── */}
+              {isOpen && (
+                <div className={styles.breakdown}>
+                  <div className={styles.breakdownHeader}>
+                    <span>Denomination</span>
+                    <span>Breakdown</span>
+                    <span>Value</span>
+                  </div>
+                  {tx.denoms?.map((d, i) => (
+                    <div key={i} className={styles.breakdownRow}>
+                      <span className={styles.breakDenom}>{d.label}</span>
+                      <span className={styles.breakParts}>{buildParts(d)}</span>
+                      <span className={styles.breakValue}>{fmt(d.total)}</span>
+                    </div>
+                  ))}
+                  <div className={styles.breakdownTotal}>
+                    <span>Grand Total</span>
+                    <span></span>
+                    <span>{fmt(tx.total)}</span>
+                  </div>
+                </div>
+              )}
+
             </div>
-            <div className={styles.itemAmount}>{fmt(tx.total)}</div>
-            <div className={styles.itemNotes}>{tx.notes?.toLocaleString()} notes</div>
-            <div className={styles.itemDenoms}>
-              {tx.denoms?.map((d, i) => (
-                <span key={i} className={styles.denomTag}>{d.label}: {fmt(d.total)}</span>
-              ))}
-            </div>
-            {tx.matched !== null && (
-              <span className={`${styles.discTag} ${tx.matched ? styles.match : styles.mismatch}`}>
-                {tx.matched ? '✅ Slip matched' : `❌ Mismatch — slip was ${fmt(tx.slip)}`}
-              </span>
-            )}
-          </div>
-        ))
+          )
+        })
       )}
 
+      {/* Confirm modal */}
       {showConfirm && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
